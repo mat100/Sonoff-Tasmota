@@ -44,10 +44,10 @@
 \*********************************************************************************************/
 
 // -- Master parameter control --------------------
-#define CFG_HOLDER             4617              // [Reset 1] Change this value (max 32000) to load SECTION1 configuration parameters to flash
+#define CFG_HOLDER             4618              // [Reset 1] Change this value (max 32000) to load SECTION1 configuration parameters to flash
 
 // -- Project -------------------------------------
-#define PROJECT                "sonoff"          // PROJECT is used as the default topic delimiter
+#define PROJECT                "matejs-sonoff"   // PROJECT is used as the default topic delimiter
 #define MODULE                 SONOFF_BASIC      // [Module] Select default model from sonoff_template.h (Should not be changed)
 
 #define SAVE_DATA              1                 // [SaveData] Save changed parameters to Flash (0 = disable, 1 - 3600 seconds)
@@ -63,9 +63,9 @@
 #define STA_PASS1              ""                // [Password1] Wifi password
 #define STA_SSID2              ""                // [Ssid2] Optional alternate AP Wifi SSID
 #define STA_PASS2              ""                // [Password2] Optional alternate AP Wifi password
-#define WIFI_CONFIG_TOOL       WIFI_WAIT         // [WifiConfig] Default tool if wifi fails to connect
+#define WIFI_CONFIG_TOOL       WIFI_RETRY        // [WifiConfig] Default tool if wifi fails to connect
                                                  //   (WIFI_RESTART, WIFI_SMARTCONFIG, WIFI_MANAGER, WIFI_WPSCONFIG, WIFI_RETRY, WIFI_WAIT, WIFI_SERIAL)
-#define WIFI_CONFIG_NO_SSID    WIFI_WPSCONFIG    // Default tool if wifi fails to connect and no SSID is configured
+#define WIFI_CONFIG_NO_SSID    WIFI_MANAGER      // Default tool if wifi fails to connect and no SSID is configured
                                                  //   (WIFI_SMARTCONFIG, WIFI_MANAGER, WIFI_WPSCONFIG, WIFI_SERIAL)
                                                  //   *** NOTE: When WPS is disabled by USE_WPS below, WIFI_WPSCONFIG will execute WIFI_MANAGER ***
                                                  //   *** NOTE: When WIFI_MANAGER is disabled by USE_WEBSERVER below, WIFI_MANAGER will execute WIFI_SMARTCONFIG ***
@@ -82,7 +82,7 @@
 #define OTA_URL                "http://thehackbox.org/tasmota/release/sonoff.bin"  // [OtaUrl]
 
 // -- MQTT ----------------------------------------
-#define MQTT_USE               1                 // [SetOption3] Select default MQTT use (0 = Off, 1 = On)
+#define MQTT_USE               0                 // [SetOption3] Select default MQTT use (0 = Off, 1 = On)
 
 #define MQTT_HOST              ""                // [MqttHost]
 #define MQTT_FINGERPRINT1      "A5 02 FF 13 99 9F 8B 39 8E F1 83 4F 11 23 65 0B 32 36 FC 07"  // [MqttFingerprint1]
@@ -91,9 +91,9 @@
 #define MQTT_USER              "DVES_USER"       // [MqttUser] MQTT user
 #define MQTT_PASS              "DVES_PASS"       // [MqttPassword] MQTT password
 
-#define MQTT_BUTTON_RETAIN     0                 // [ButtonRetain] Button may send retain flag (0 = off, 1 = on)
-#define MQTT_POWER_RETAIN      0                 // [PowerRetain] Power status message may send retain flag (0 = off, 1 = on)
-#define MQTT_SWITCH_RETAIN     0                 // [SwitchRetain] Switch may send retain flag (0 = off, 1 = on)
+#define MQTT_BUTTON_RETAIN     1                 // [ButtonRetain] Button may send retain flag (0 = off, 1 = on)
+#define MQTT_POWER_RETAIN      1                 // [PowerRetain] Power status message may send retain flag (0 = off, 1 = on)
+#define MQTT_SWITCH_RETAIN     1                 // [SwitchRetain] Switch may send retain flag (0 = off, 1 = on)
 
 #define MQTT_STATUS_OFF        "OFF"             // [StateText1] Command or Status result when turned off (needs to be a string like "0" or "Off")
 #define MQTT_STATUS_ON         "ON"              // [StateText2] Command or Status result when turned on (needs to be a string like "1" or "On")
@@ -105,7 +105,7 @@
 #define MQTT_FULLTOPIC         "%prefix%/%topic%/" // [FullTopic] Subscribe and Publish full topic name - Legacy topic
 
 // %prefix% token options
-#define SUB_PREFIX             "cmnd"            // [Prefix1] Sonoff devices subscribe to %prefix%/%topic% being SUB_PREFIX/MQTT_TOPIC and SUB_PREFIX/MQTT_GRPTOPIC
+#define SUB_PREFIX             "cmd"             // [Prefix1] Sonoff devices subscribe to %prefix%/%topic% being SUB_PREFIX/MQTT_TOPIC and SUB_PREFIX/MQTT_GRPTOPIC
 #define PUB_PREFIX             "stat"            // [Prefix2] Sonoff devices publish to %prefix%/%topic% being PUB_PREFIX/MQTT_TOPIC
 #define PUB_PREFIX2            "tele"            // [Prefix3] Sonoff devices publish telemetry data to %prefix%/%topic% being PUB_PREFIX2/MQTT_TOPIC/UPTIME, POWER and TIME
                                                  //   May be named the same as PUB_PREFIX
@@ -128,13 +128,13 @@
 // -- HTTP ----------------------------------------
 #define WEB_SERVER             2                 // [WebServer] Web server (0 = Off, 1 = Start as User, 2 = Start as Admin)
 #define WEB_PASSWORD           ""                // [WebPassword] Web server Admin mode Password for WEB_USERNAME (empty string = Disable)
-#define FRIENDLY_NAME          "Sonoff"          // [FriendlyName] Friendlyname up to 32 characters used by webpages and Alexa
+#define FRIENDLY_NAME          "Matejs Sonoff"   // [FriendlyName] Friendlyname up to 32 characters used by webpages and Alexa
 #define EMULATION              EMUL_NONE         // [Emulation] Select Belkin WeMo (single relay/light) or Hue Bridge emulation (multi relay/light) (EMUL_NONE, EMUL_WEMO or EMUL_HUE)
 
-// -- Time - Up to three NTP servers in your region
-#define NTP_SERVER1            "pool.ntp.org"       // [NtpServer1] Select first NTP server by name or IP address (129.250.35.250)
-#define NTP_SERVER2            "nl.pool.ntp.org"    // [NtpServer2] Select second NTP server by name or IP address (5.39.184.5)
-#define NTP_SERVER3            "0.nl.pool.ntp.org"  // [NtpServer3] Select third NTP server by name or IP address (93.94.224.67)
+// -- Time - Up to three NTP servers in CZ
+#define NTP_SERVER1            "cz.pool.ntp.org"    // [NtpServer1] Select first NTP server by name or IP address (129.250.35.250)
+#define NTP_SERVER2            "2.cz.pool.ntp.org"  // [NtpServer2] Select second NTP server by name or IP address (5.39.184.5)
+#define NTP_SERVER3            "3.cz.pool.ntp.org"  // [NtpServer3] Select third NTP server by name or IP address (93.94.224.67)
 
 // -- Time - Start Daylight Saving Time and timezone offset from UTC in minutes
 #define TIME_DST_HEMISPHERE    North             // [TimeDst] Hemisphere (0 or North, 1 or South)
@@ -152,12 +152,12 @@
 #define TIME_STD_HOUR          3                 // Hour (0 to 23)
 #define TIME_STD_OFFSET        +60               // Offset from UTC in minutes (-780 to +780)
 
-// -- Location ------------------------------------
-#define LATITUDE               48.858360         // [Latitude] Your location to be used with sunrise and sunset
-#define LONGITUDE              2.294442          // [Longitude] Your location to be used with sunrise and sunset
+// -- Location - Plzen ----------------------------
+#define LATITUDE               49.738431         // [Latitude] Your location to be used with sunrise and sunset
+#define LONGITUDE              13.373637         // [Longitude] Your location to be used with sunrise and sunset
 
 // -- Application ---------------------------------
-#define APP_TIMEZONE           1                 // [Timezone] +1 hour (Amsterdam) (-13 .. 14 = hours from UTC, 99 = use TIME_DST/TIME_STD)
+#define APP_TIMEZONE           1                 // [Timezone] +1 hour (Prague) (-13 .. 14 = hours from UTC, 99 = use TIME_DST/TIME_STD)
 #define APP_LEDSTATE           LED_POWER         // [LedState] Function of led
                                                  //   (LED_OFF, LED_POWER, LED_MQTTSUB, LED_POWER_MQTTSUB, LED_MQTTPUB, LED_POWER_MQTTPUB, LED_MQTT, LED_POWER_MQTT)
 #define APP_PULSETIME          0                 // [PulseTime] Time in 0.1 Sec to turn off power for relay 1 (0 = disabled)
@@ -174,9 +174,9 @@
 #define WS2812_LEDS            30                // [Pixels] Number of WS2812 LEDs to start with (max is 512)
 
 #define TEMP_CONVERSION        0                 // [SetOption8] Return temperature in (0 = Celsius or 1 = Fahrenheit)
-#define TEMP_RESOLUTION        1                 // [TempRes] Maximum number of decimals (0 - 3) showing sensor Temperature
-#define HUMIDITY_RESOLUTION    1                 // [HumRes] Maximum number of decimals (0 - 3) showing sensor Humidity
-#define PRESSURE_RESOLUTION    1                 // [PressRes] Maximum number of decimals (0 - 3) showing sensor Pressure
+#define TEMP_RESOLUTION        2                 // [TempRes] Maximum number of decimals (0 - 3) showing sensor Temperature
+#define HUMIDITY_RESOLUTION    2                 // [HumRes] Maximum number of decimals (0 - 3) showing sensor Humidity
+#define PRESSURE_RESOLUTION    2                 // [PressRes] Maximum number of decimals (0 - 3) showing sensor Pressure
 #define ENERGY_RESOLUTION      3                 // [EnergyRes] Maximum number of decimals (0 - 5) showing energy usage in kWh
 
 /*********************************************************************************************\
@@ -214,7 +214,7 @@
 //#define USE_SMARTCONFIG                          // Add support for Wifi SmartConfig as initial wifi configuration tool (+23k code, +0.6k mem)
 
 // -- OTA -----------------------------------------
-//#define USE_ARDUINO_OTA                          // Add optional support for Arduino OTA (+13k code)
+#define USE_ARDUINO_OTA                          // Add optional support for Arduino OTA (+13k code)
 
 /*-------------------------------------------------------------------------------------------*\
  * Select ONE of possible MQTT library types below
