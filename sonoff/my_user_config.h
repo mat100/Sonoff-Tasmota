@@ -44,10 +44,10 @@
 \*********************************************************************************************/
 
 // -- Master parameter control --------------------
-#define CFG_HOLDER             4618              // [Reset 1] Change this value (max 32000) to load SECTION1 configuration parameters to flash
+#define CFG_HOLDER             4620              // [Reset 1] Change this value (max 32000) to load SECTION1 configuration parameters to flash
 
 // -- Project -------------------------------------
-#define PROJECT                "matejs-sonoff"   // PROJECT is used as the default topic delimiter
+#define PROJECT                "sonoff"          // PROJECT is used as the default topic delimiter
 #define MODULE                 SONOFF_BASIC      // [Module] Select default model from sonoff_template.h (Should not be changed)
 
 #define SAVE_DATA              1                 // [SaveData] Save changed parameters to Flash (0 = disable, 1 - 3600 seconds)
@@ -214,7 +214,7 @@
 //#define USE_SMARTCONFIG                          // Add support for Wifi SmartConfig as initial wifi configuration tool (+23k code, +0.6k mem)
 
 // -- OTA -----------------------------------------
-#define USE_ARDUINO_OTA                          // Add optional support for Arduino OTA (+13k code)
+// #define USE_ARDUINO_OTA                          // Add optional support for Arduino OTA (+13k code)
 
 /*-------------------------------------------------------------------------------------------*\
  * Select ONE of possible MQTT library types below
