@@ -28,6 +28,8 @@
  * I2C Address: 0x48 - 0x4F
 \*********************************************************************************************/
 
+#define XSNS_26                 26
+
 #define LM75AD_ADDRESS1					0x48
 #define LM75AD_ADDRESS2					0x49
 #define LM75AD_ADDRESS3					0x4A
@@ -79,9 +81,8 @@ float LM75ADGetTemp(void) {
 void LM75ADShow(boolean json)
 {
   if (lm75ad_type) {
-    char temperature[10];
-
     float t = LM75ADGetTemp();
+    char temperature[33];
     dtostrfd(t, Settings.flag2.temperature_resolution, temperature);
 
     if (json) {
@@ -100,8 +101,6 @@ void LM75ADShow(boolean json)
 /*********************************************************************************************\
  * Interface
 \*********************************************************************************************/
-
-#define XSNS_26
 
 boolean Xsns26(byte function)
 {

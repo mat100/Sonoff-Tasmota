@@ -21,6 +21,8 @@
  * Counter sensors (water meters, electricity meters etc.)
 \*********************************************************************************************/
 
+#define XSNS_01             1
+
 unsigned long last_counter_timer[MAX_COUNTERS]; // Last counter time in micro seconds
 
 void CounterUpdate(byte index)
@@ -39,29 +41,29 @@ void CounterUpdate(byte index)
   }
 }
 
-void CounterUpdate1()
+void CounterUpdate1(void)
 {
   CounterUpdate(1);
 }
 
-void CounterUpdate2()
+void CounterUpdate2(void)
 {
   CounterUpdate(2);
 }
 
-void CounterUpdate3()
+void CounterUpdate3(void)
 {
   CounterUpdate(3);
 }
 
-void CounterUpdate4()
+void CounterUpdate4(void)
 {
   CounterUpdate(4);
 }
 
 /********************************************************************************************/
 
-void CounterSaveState()
+void CounterSaveState(void)
 {
   for (byte i = 0; i < MAX_COUNTERS; i++) {
     if (pin[GPIO_CNTR1 +i] < 99) {
@@ -70,7 +72,7 @@ void CounterSaveState()
   }
 }
 
-void CounterInit()
+void CounterInit(void)
 {
   typedef void (*function) () ;
   function counter_callbacks[] = { CounterUpdate1, CounterUpdate2, CounterUpdate3, CounterUpdate4 };
@@ -91,12 +93,12 @@ const char HTTP_SNS_COUNTER[] PROGMEM =
 void CounterShow(boolean json)
 {
   char stemp[10];
-  char counter[16];
 
   byte dsxflg = 0;
   byte header = 0;
   for (byte i = 0; i < MAX_COUNTERS; i++) {
     if (pin[GPIO_CNTR1 +i] < 99) {
+      char counter[33];
       if (bitRead(Settings.pulse_counter_type, i)) {
         dtostrfd((double)RtcSettings.pulse_counter[i] / 1000000, 6, counter);
       } else {
@@ -138,8 +140,6 @@ void CounterShow(boolean json)
 /*********************************************************************************************\
  * Interface
 \*********************************************************************************************/
-
-#define XSNS_01
 
 boolean Xsns01(byte function)
 {
