@@ -429,6 +429,17 @@
 #define D_ENERGY_YESTERDAY "Energy Yesterday"
 #define D_ENERGY_TOTAL "Energy Total"
 
+// xdrv_91_ms_timers.ino
+#define D_CONFIGURE_MS_TIMER "Configure Timer"
+#define D_MS_TIMER_PARAMETERS "Timer parameters"
+#define D_MS_TIMER_GLOBAL_ENABLE "Global enable"
+#define D_MS_TIMER_ENABLE "Enable"
+#define D_MS_TIMER_TIME_ON "Time ON"
+#define D_MS_TIMER_TIME_OFF "Time OFF"
+#define D_MS_TIMER_DAYS "Days"
+#define D_MS_TIMER_REPEAT "Repeat"
+#define D_MS_TIMER_OUTPUT "Output"
+
 // xsns_05_ds18b20.ino
 #define D_SENSOR_BUSY "Sensor busy"
 #define D_SENSOR_CRC_ERROR "Sensor CRC error"
