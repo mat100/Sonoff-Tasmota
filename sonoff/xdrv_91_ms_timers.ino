@@ -45,6 +45,7 @@
   #define D_JSON_MS_TIMER_NO_DEVICE "No GPIO as output configured"
 #define D_CMND_MS_TIMERS "Timers"
 
+enum MSTimerCommands { CMND_MS_TIMER, CMND_MS_TIMERS };
 const char kMSTimerCommands[] PROGMEM = D_CMND_MS_TIMER "|" D_CMND_MS_TIMERS;
 
 uint16_t ms_timer_last_minute = 60;
@@ -56,8 +57,8 @@ byte ms_timer_output_mem[MAX_RELAYS];
 
 void MSTimerEverySecond(void)
 {
-  if (RtcTime.valid) {
-    if (Settings.flag3.timers_enable && (uptime > 10) && (RtcTime.minute != ms_timer_last_minute)) {  // Execute from one minute after restart every minute only once
+  if (Settings.flag3.timers_enable && RtcTime.valid) {
+    if ((uptime > 10) && (RtcTime.minute != ms_timer_last_minute)) {  // Execute from one minute after restart every minute only once
       ms_timer_last_minute = RtcTime.minute;
       int16_t time = (RtcTime.hour *60) + RtcTime.minute;
       uint8_t days = 1 << (RtcTime.day_of_week -1);
@@ -262,7 +263,7 @@ boolean MSTimerCommand(void)
 
     byte jsflg = 0;
     byte lines = 1;
-    for (byte i = 0; i < MAX_TIMERS; i++) {
+    for (byte i = 0; i < (MAX_TIMERS /2); i++) {
       if (!jsflg) {
         snprintf_P(mqtt_data, sizeof(mqtt_data), PSTR("{\"" D_CMND_MS_TIMERS "%d\":{"), lines++);
       } else {
