@@ -53,6 +53,48 @@ uint16_t ms_timer_last_minute = 60;
 byte ms_timer_output[MAX_RELAYS];
 byte ms_timer_output_mem[MAX_RELAYS];
 
+
+void UpdateMSTimerNextRun()
+{
+  ms_timers_day_next_run = 0;
+  ms_timers_time_next_run = INT16_MAX;
+
+  if (Settings.flag3.timers_enable) {
+    int16_t time = (RtcTime.hour *60) + RtcTime.minute;
+
+    for (byte i = 0; i <= 7; i++) { // Day loop
+      uint8_t days = 1 << (RtcTime.day_of_week +i -1); // Actual day + loop offset
+
+      for (byte j = 0; j < (MAX_TIMERS / 2); j++) { // Loop for all timers
+        Timer xtimer = Settings.timer[j];
+
+        if (xtimer.arm && (xtimer.days & days)) // Timer active for this day
+          if (time < xtimer.time) // Time on is lower then actual time
+            if (ms_timers_time_next_run > xtimer.time) { // Time on is lower then last found
+              ms_timers_day_next_run = RtcTime.day_of_week +i; // day
+              ms_timers_time_next_run = xtimer.time;
+            }
+      }
+      if (ms_timers_time_next_run != INT16_MAX) // Time found
+        break;
+    }
+
+    if (ms_timers_time_next_run == INT16_MAX) { // No time found, check this day a week ahead
+      uint8_t days = 1 << (RtcTime.day_of_week -1);
+
+      for (byte j = 0; j < (MAX_TIMERS / 2); j++) { // Loop for all timers
+        Timer xtimer = Settings.timer[j];
+
+        if (xtimer.arm && (xtimer.days & days)) // Timer active for this day
+          if (ms_timers_time_next_run > xtimer.time) { // Time on is lower then last found
+            ms_timers_day_next_run = RtcTime.day_of_week; // day
+            ms_timers_time_next_run = xtimer.time;
+          }
+      }
+    }
+  }
+}
+
 /*******************************************************************************************/
 
 void MSTimerEverySecond(void)
@@ -75,18 +117,20 @@ void MSTimerEverySecond(void)
         if (set_time_off < 0) { set_time_off = 0; }
         if (set_time_off > 1439) { set_time_off = 1439; }
 
-        if (xtimer.arm && (xtimer.days & days))
-          if (set_time_off > set_time_on)
+        if (xtimer.arm && (xtimer.days & days)) {
+          if (set_time_off > set_time_on) {
             if ((time >= set_time_on) && (time < set_time_off))
               ms_timer_output[xtimer.device +1] = POWER_ON;
             else if (ms_timer_output_mem[xtimer.device +1]) 
               Settings.timer[i].arm = xtimer.repeat;
 
-          else if (set_time_off < set_time_on)
+          } else if (set_time_off < set_time_on) {
             if ((time >= set_time_on) || (time <= set_time_off))
               ms_timer_output[xtimer.device +1] = POWER_ON;
             else if (ms_timer_output_mem[xtimer.device +1]) 
               Settings.timer[i].arm = xtimer.repeat;
+          }
+        }
       }
     }
   } else
@@ -97,6 +141,8 @@ void MSTimerEverySecond(void)
       if (devices_present) ExecuteCommandPower(i, ms_timer_output[i], SRC_TIMER);    
       ms_timer_output_mem[i] = ms_timer_output[i];
     }
+
+  UpdateMSTimerNextRun();
 }
 
 void PrepShowMSTimer(uint8_t index)
@@ -292,10 +338,10 @@ boolean MSTimerCommand(void)
 
 #define WEB_HANDLE_MS_TIMER "mst"
 
-const char S_CONFIGURE_MS_TIMER[] PROGMEM = D_CONFIGURE_MS_TIMER;
+const char S_CONFIGURE_MS_TIMERS[] PROGMEM = D_CONFIGURE_MS_TIMERS;
 
 const char HTTP_BTN_MENU_MS_TIMER[] PROGMEM =
-  "<br/><form action='" WEB_HANDLE_MS_TIMER "' method='get'><button>" D_CONFIGURE_MS_TIMER "</button></form>";
+  "<br/><form action='" WEB_HANDLE_MS_TIMER "' method='get'><button>" D_CONFIGURE_MS_TIMERS "</button></form>";
 
 const char HTTP_MS_TIMER_SCRIPT[] PROGMEM =
   "var pt=[],ct=99;"
@@ -371,7 +417,7 @@ const char HTTP_FORM_MS_TIMER[] PROGMEM =
   "<fieldset style='min-width:470px;text-align:center;'>"
   "<legend style='text-align:left;'><b>&nbsp;" D_MS_TIMER_PARAMETERS "&nbsp;</b></legend>"
   "<form method='post' action='" WEB_HANDLE_MS_TIMER "' onsubmit='return st();'>"
-  "<br/><input style='width:5%;' id='e0' name='e0' type='checkbox'{e0><b>" D_MS_TIMER_GLOBAL_ENABLE "</b><br/><br/><hr/>"
+  "<br/><input style='width:5%;' id='e0' name='e0' type='checkbox'{e0><b>" D_MS_TIMERS_ENABLE "</b><br/><br/><hr/>"
   "<input id='t0' name='t0' value='";
 const char HTTP_FORM_MS_TIMER1[] PROGMEM =
   "' hidden><div id='bt' name='bt'></div><br/><br/><br/>"
@@ -399,7 +445,7 @@ void HandleMSTimerConfiguration(void)
 {
   if (!HttpCheckPriviledgedAccess()) { return; }
 
-  AddLog_P(LOG_LEVEL_DEBUG, S_LOG_HTTP, S_CONFIGURE_MS_TIMER);
+  AddLog_P(LOG_LEVEL_DEBUG, S_LOG_HTTP, S_CONFIGURE_MS_TIMERS);
 
   if (WebServer->hasArg("save")) {
     MSTimerSaveSettings();
@@ -408,7 +454,7 @@ void HandleMSTimerConfiguration(void)
   }
 
   String page = FPSTR(HTTP_HEAD);
-  page.replace(F("{v}"), FPSTR(S_CONFIGURE_MS_TIMER));
+  page.replace(F("{v}"), FPSTR(S_CONFIGURE_MS_TIMERS));
   page += FPSTR(HTTP_MS_TIMER_SCRIPT);
   page += FPSTR(HTTP_HEAD_STYLE);
   page.replace(F("</style>"), FPSTR(HTTP_MS_TIMER_STYLE));

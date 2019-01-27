@@ -430,15 +430,18 @@
 #define D_ENERGY_TOTAL "Energy Total"
 
 // xdrv_91_ms_timers.ino
-#define D_CONFIGURE_MS_TIMER "Configure Timer"
+#define D_CONFIGURE_MS_TIMERS "Configure Timer"
+#define D_MS_TIMERS_ENABLE "Global enable"
 #define D_MS_TIMER_PARAMETERS "Timer parameters"
-#define D_MS_TIMER_GLOBAL_ENABLE "Global enable"
 #define D_MS_TIMER_ENABLE "Enable"
 #define D_MS_TIMER_TIME_ON "Time ON"
 #define D_MS_TIMER_TIME_OFF "Time OFF"
 #define D_MS_TIMER_DAYS "Days"
 #define D_MS_TIMER_REPEAT "Repeat"
 #define D_MS_TIMER_OUTPUT "Output"
+
+#define D_MS_TIMERS_RTC_TIME "RTC Time"
+#define D_MS_TIMERS_NEXT_RUN "Timers next run at"
 
 // xsns_05_ds18b20.ino
 #define D_SENSOR_BUSY "Sensor busy"

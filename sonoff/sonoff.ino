@@ -181,6 +181,11 @@ char log_data[LOGSZ];                       // Logging
 char web_log[WEB_LOG_SIZE] = {'\0'};        // Web log buffer
 String backlog[MAX_BACKLOG];                // Command backlog
 
+#ifdef USE_MS_TIMERS
+  uint8_t ms_timers_day_next_run;
+  int16_t ms_timers_time_next_run;
+#endif
+
 /********************************************************************************************/
 
 char* Format(char* output, const char* input, int size)

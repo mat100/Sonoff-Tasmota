@@ -270,11 +270,11 @@
 
 // -- Time ----------------------------------------
 #define USE_MS_TIMERS
-  #define USE_MS_TIMERS_WEB                       // Add timer webpage support (+4k5 code)
+  #define USE_MS_TIMERS_WEB                      // Add timer webpage support (+x code)
 
-//#define USE_TIMERS                               // Add support for up to 16 timers (+2k2 code)
+//#define USE_TIMERS                             // Add support for up to 16 timers (+2k2 code)
   #define USE_TIMERS_WEB                         // Add timer webpage support (+4k5 code)
-  //#define USE_SUNRISE                            // Add support for Sunrise and sunset tools (+16k)
+  #define USE_SUNRISE                            // Add support for Sunrise and sunset tools (+16k)
     #define SUNRISE_DAWN_ANGLE DAWN_NORMAL       // Select desired Dawn Angle from (DAWN_NORMAL, DAWN_CIVIL, DAWN_NAUTIC, DAWN_ASTRONOMIC)
 
 // -- Rules ---------------------------------------

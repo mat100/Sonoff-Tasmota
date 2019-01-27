@@ -1390,6 +1390,21 @@ void HandleInformation(void)
   func += F("}1" D_PROGRAM_SIZE "}2"); func += String(ESP.getSketchSize() / 1024); func += F("kB");
   func += F("}1" D_FREE_PROGRAM_SPACE "}2"); func += String(ESP.getFreeSketchSpace() / 1024); func += F("kB");
   func += F("}1" D_FREE_MEMORY "}2"); func += String(freeMem / 1024); func += F("kB");
+
+#ifdef USE_MS_TIMERS
+  func += F("}1}2&nbsp;");  // Empty line
+  func += F("}1" D_MS_TIMERS_RTC_TIME "}2"); func += GetDateAndTime(DT_LOCAL);
+
+  func += F("}1" D_MS_TIMERS_NEXT_RUN "}2");
+  if (ms_timers_day_next_run > 0) {
+    String day3list = D_DAY3LIST;
+    func += day3list.substring(ms_timers_day_next_run - 1, 3);
+    func += F(" ");
+    func += String(ms_timers_time_next_run / 60); func += F(":"); func += String(ms_timers_time_next_run % 60);
+  } else
+    func +=  F("None");
+#endif
+
   func += F("</td></tr></table>");
   func += FPSTR(HTTP_SCRIPT_INFO_END);
   page.replace(F("</script>"), func);
